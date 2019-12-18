@@ -1,28 +1,32 @@
-const db = require('../database/dbConfig.js');
+const db = require('../data/dbConfig.js');
 
 module.exports = {
-  add,
-  find,
-  findBy,
-  findById,
+	add,
+	find,
+	findById,
+	findByDept
 };
 
-function find() {
-  return db('users').select('id', 'username', 'password');
-}
-
-function findBy(filter) {
-  return db('users').where(filter);
-}
-
 async function add(user) {
-  const [id] = await db('users').insert(user);
+	// sends info, gets id back
+	// id is destructured from an array?
+	const [id] = await db('users').insert(user);
 
-  return findById(id);
+	return findById(id);
+}
+
+function find() {
+	return db('users');
 }
 
 function findById(id) {
-  return db('users')
-    .where({ id })
-    .first();
+	return db('users')
+		.where({ id })
+		.first();
+}
+
+function findByDept(dept) {
+	return db('users')
+		.where({ dept })
+		.first();
 }
